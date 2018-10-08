@@ -147,6 +147,7 @@ class TransactionMapper
                 ->setId($lineElement->getAttribute('id'))
                 ->setDim1(self::getField($transaction, $lineElement, 'dim1'))
                 ->setDim2(self::getField($transaction, $lineElement, 'dim2'))
+                ->setDim3(self::getField($transaction, $lineElement, 'dim3'))
                 ->setValue(Money::EUR(100 * self::getField($transaction, $lineElement, 'value')))
                 ->setDebitCredit(new DebitCredit(self::getField($transaction, $lineElement, 'debitcredit')))
                 ->setBaseValue(Money::EUR(100 * self::getField($transaction, $lineElement, 'basevalue')))
