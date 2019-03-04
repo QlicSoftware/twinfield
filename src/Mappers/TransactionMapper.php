@@ -30,7 +30,7 @@ use PhpTwinfield\Util;
 class TransactionMapper
 {
     /**
-     * @param string   $transactionClassName
+     * @param string $transactionClassName
      * @param Response $response
      *
      * @return iterable|BaseTransaction[]
@@ -103,7 +103,10 @@ class TransactionMapper
         }
 
         if (Util::objectUses(DueDateField::class, $transaction)) {
-            $transaction->setDueDateFromString(self::getField($transaction, $transactionElement, 'duedate'));
+            $dueDate = self::getField($transaction, $transactionElement, 'duedate');
+            if (!is_null($dueDate)) {
+                $transaction->setDueDateFromString(self::getField($transaction, $transactionElement, 'duedate'));
+            }
         }
         if (Util::objectUses(InvoiceNumberField::class, $transaction)) {
             $transaction->setInvoiceNumber(self::getField($transaction, $transactionElement, 'invoicenumber'));
@@ -139,7 +142,7 @@ class TransactionMapper
 
             /** @var BaseTransactionLine $transactionLine */
             $transactionLine = new $transactionLineClassName();
-            $lineType        = $lineElement->getAttribute('type');
+            $lineType = $lineElement->getAttribute('type');
 
             $transactionLine
                 ->setLineType(new LineType($lineType))
