@@ -75,6 +75,22 @@ class PurchaseTransactionLine extends BaseTransactionLine
     }
 
     /**
+     * If line type = detail the project or asset or empty.
+     *
+     * @param string $dim3
+     * @return $this
+     * @throws Exception
+     */
+    public function setProjectAsset(string $dim3)
+    {
+        if (!$this->getLineType()->equals(LineType::DETAIL()) && !$this->getLineType()->equals(LineType::VAT())) {
+            throw Exception::invalidDimensionForLineType(3, $this);
+        }
+
+        return $this->setDim3($dim3);
+    }
+
+    /**
      * If line type = total
      * - In case of a 'normal' purchase transaction credit.
      * - In case of a credit purchase transaction debit.
@@ -115,13 +131,13 @@ class PurchaseTransactionLine extends BaseTransactionLine
      */
     public function setMatchStatus(?string $matchStatus): BaseTransactionLine
     {
-        if (
-            $matchStatus !== null &&
-            in_array($this->getLineType(), [LineType::DETAIL(), LineType::VAT()]) &&
-            $matchStatus != self::MATCHSTATUS_NOTMATCHABLE
-        ) {
-            throw Exception::invalidMatchStatusForLineType($matchStatus, $this);
-        }
+        // if (
+        //     $matchStatus !== null &&
+        //     in_array($this->getLineType(), [LineType::DETAIL(), LineType::VAT()]) &&
+        //     $matchStatus != self::MATCHSTATUS_NOTMATCHABLE
+        // ) {
+        //     throw Exception::invalidMatchStatusForLineType($matchStatus, $this);
+        // }
 
         return parent::setMatchStatus($matchStatus);
     }
@@ -135,9 +151,9 @@ class PurchaseTransactionLine extends BaseTransactionLine
      */
     public function setMatchLevel(?int $matchLevel): BaseTransactionLine
     {
-        if ($matchLevel !== null && !$this->getLineType()->equals(LineType::TOTAL())) {
-            throw Exception::invalidFieldForLineType('matchLevel', $this);
-        }
+        // if ($matchLevel !== null && !$this->getLineType()->equals(LineType::TOTAL())) {
+        //     throw Exception::invalidFieldForLineType('matchLevel', $this);
+        // }
 
         return parent::setMatchLevel($matchLevel);
     }
@@ -151,9 +167,9 @@ class PurchaseTransactionLine extends BaseTransactionLine
      */
     public function setBaseValueOpen(?Money $baseValueOpen): BaseTransactionLine
     {
-        if ($baseValueOpen !== null && !$this->getLineType()->equals(LineType::TOTAL())) {
-            throw Exception::invalidFieldForLineType('baseValueOpen', $this);
-        }
+        // if ($baseValueOpen !== null && !$this->getLineType()->equals(LineType::TOTAL())) {
+        //     throw Exception::invalidFieldForLineType('baseValueOpen', $this);
+        // }
 
         return parent::setBaseValueOpen($baseValueOpen);
     }
